@@ -66,7 +66,7 @@ hist(bydate$steps,breaks = 50,main = "Hstogram of steps taken per day",xlab = "S
 
 ![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
 
-##Most steps taken during the inrerval from:
+##Most steps taken during the inrerval:
 
 ```r
 byinterval[which(byinterval$mean ==max(byinterval$mean)), ]
@@ -95,18 +95,34 @@ plot(x = byinterval$interval, y = byinterval$mean,type = "l",main = "Daily activ
 ## Imputing missing values
 
 ```r
-#I haven't done yet
+#funtion to fill na's with the mean of the values of that interval
+fillna <- function(dframe){
+        count <- 1
+        for(i in dframe$steps){
+                if(is.na(i)){
+                        row <- dframe[count,]
+                       thisinter <-format(row$interval,format = "%H:%M")
+                       thisinter <- as.POSIXct(thisinter, format = "%H:%M")
+                      meanvalue<- byinterval[which(byinterval$interval == thisinter),2]
+                      dframe[count,1] <-meanvalue
+                       count <- count+1
+                }
+        }
+        dframe
+}
+
+activity <- fillna(activity)
 ```
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
 ```r
-newactivity <- activity
-newactivity$day <- "weekday"
-weekend <-weekdays(newactivity$date) == "sunnuntai" | weekdays(newactivity$date) == "lauantai"
-newactivity[weekend,]$day <- "weekend"
-weekdays <- newactivity[newactivity$day == "weekday",]
-weekends <- newactivity[newactivity$day == "weekend",]
+#Plots made after filling the NA values
+activity$day <- "weekday"
+weekend <-weekdays(activity$date) == "sunnuntai" | weekdays(activity$date) == "lauantai"
+activity[weekend,]$day <- "weekend"
+weekdays <- activity[activity$day == "weekday",]
+weekends <- activity[activity$day == "weekend",]
 
 weekdaysinterval <- group_by(weekdays,interval)
 weekdaysinterval <- summarise(weekdaysinterval, mean = mean(steps,na.rm=T))
