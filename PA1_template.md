@@ -1,26 +1,15 @@
-# Reproducible Research: Peer Assessment 1
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+  html_document:
+    keep_md: true
+---
 
 
 ## Loading and preprocessing the data
 
 ```r
 library(dplyr)
-```
-
-```
-## 
-## Attaching package: 'dplyr'
-## 
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-## 
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
-```r
 library(ggplot2)
 
 #function to turn the interval variable to time
@@ -75,7 +64,7 @@ stepmedian
 hist(bydate$steps,breaks = 50,main = "Hstogram of steps taken per day",xlab = "Steps")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
 
 ##Most steps taken during the inrerval from:
 
@@ -100,7 +89,7 @@ byinterval <-summarise(byinterval, mean =  mean(steps,na.rm=T))
 plot(x = byinterval$interval, y = byinterval$mean,type = "l",main = "Daily activity pattern", xlab = "Time of day", ylab = "Mean of steps taken")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
 
 
 ## Imputing missing values
@@ -132,4 +121,4 @@ weekendinterval <- summarise(weekendinterval, mean = mean(steps,na.rm=T))
 plot(weekendinterval$interval,weekendinterval$mean,ylim = c(0,250),type = "l",xlab = "Weekend",ylab = "mean of steps")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
